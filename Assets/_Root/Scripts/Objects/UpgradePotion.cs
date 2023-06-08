@@ -50,6 +50,9 @@ namespace _Root.Scripts.Objects
 
         private void OnTriggerEnter(Collider other)
         {
+            if(!_onBand)
+                return;
+            
             if (other.gameObject.TryGetComponent(out GateController gate))
             {
                 // spawn particle

@@ -76,7 +76,7 @@ namespace _Root.Scripts.Controllers
         public void CollectPotion()
         {
             _xp += 20;
-            var growingSize = new Vector3(.1f, .1f, .1f);
+            var growingSize = new Vector3(.01f, .01f, .01f);
             mainPotion.transform.DOScale(growingSize, .5f).SetEase(Ease.OutBack).SetRelative(true);
         }
         private void UpdateInterface()

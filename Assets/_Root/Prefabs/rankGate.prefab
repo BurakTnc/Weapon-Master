@@ -462,6 +462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1955908454923858187}
   - component: {fileID: 8693030463397619135}
+  - component: {fileID: 4461177190689506747}
   m_Layer: 0
   m_Name: rankGate
   m_TagString: Untagged
@@ -508,6 +509,19 @@ MonoBehaviour:
   range: 0
   damage: 0
   mainPotion: {fileID: 7989520040280913696}
+--- !u!65 &4461177190689506747
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955908454923858186}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.18, y: 3.19, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.18}
 --- !u!1 &1955908454972080600
 GameObject:
   m_ObjectHideFlags: 0

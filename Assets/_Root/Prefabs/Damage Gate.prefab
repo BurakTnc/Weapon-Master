@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4419665415911593993}
   - component: {fileID: 8233569382121516837}
+  - component: {fileID: 8493308003284246438}
   m_Layer: 0
   m_Name: Damage Gate
   m_TagString: Untagged
@@ -55,6 +56,19 @@ MonoBehaviour:
   range: 0
   damage: 0
   mainPotion: {fileID: 0}
+--- !u!65 &8493308003284246438
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4419665415911593992}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.69, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.39}
 --- !u!1 &4419665415926278362
 GameObject:
   m_ObjectHideFlags: 0

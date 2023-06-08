@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Root.Scripts.Managers;
 using _Root.Scripts.Objects;
 using _Root.Scripts.Signals;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Root.Scripts.Controllers
@@ -23,9 +24,10 @@ namespace _Root.Scripts.Controllers
         private float _fireRate;
         private float _range;
         private int _damage;
-        private int _weaponLevel = 1;
+        private int _weaponLevel;
         private int _xp;
         private float _shootTimer;
+        private bool _isRunning;
 
         private void OnEnable()
         {
@@ -39,11 +41,15 @@ namespace _Root.Scripts.Controllers
 
         private void UnSubscribe()
         {
+            CoreGameSignals.Instance.OnGameStart -= OnGameStart;
+            CoreGameSignals.Instance.OnLevelComplete -= OnGameEnd;
             LevelSignals.Instance.OnXpClaimed -= CollectXp;
         }
 
         private void Subscribe()
         {
+            CoreGameSignals.Instance.OnGameStart += OnGameStart;
+            CoreGameSignals.Instance.OnLevelComplete += OnGameEnd;
             LevelSignals.Instance.OnXpClaimed += CollectXp;
         }
 
@@ -59,6 +65,15 @@ namespace _Root.Scripts.Controllers
             BeginFire();
         }
 
+        private void OnGameStart()
+        {
+            _isRunning = true;
+        }
+
+        private void OnGameEnd()
+        {
+            _isRunning = false;
+        }
         public float FireRate
         {
             get => _fireRate;
@@ -94,6 +109,9 @@ namespace _Root.Scripts.Controllers
 
         private void BeginFire()
         {
+            if(!_isRunning)
+                return;
+            
             if (_shootTimer <= 0)
             {
                 _shootTimer += _fireRate;
@@ -108,7 +126,7 @@ namespace _Root.Scripts.Controllers
 
         private void Fire()
         {
-            for (var i = 0; i < _weaponLevel; i++)
+            for (var i = 0; i < _weaponLevel+1; i++)
             {
                 var bullet = Instantiate(Resources.Load<GameObject>("Spawnables/Bullet")).transform;
 
@@ -133,6 +151,7 @@ namespace _Root.Scripts.Controllers
             _weaponLevel++;
             ChangeWeapon();
             LevelSignals.Instance.OnLevelUp?.Invoke();
+            UIManager.Instance.UpdateXp(_xp);
         }
 
         private void ChangeWeapon()
@@ -141,7 +160,12 @@ namespace _Root.Scripts.Controllers
             {
                 weapon.SetActive(false);
             }
-            weapons[_weaponLevel].SetActive(true);
+
+            var current = weapons[_weaponLevel];
+            var scale = current.transform.localScale;
+            current.transform.localScale=Vector3.zero;
+            current.SetActive(true);
+            current.transform.DOScale(scale, .3f).SetEase(Ease.OutBack);
         }
     }
 }

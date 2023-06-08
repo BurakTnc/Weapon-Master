@@ -36,14 +36,19 @@ namespace _Root.Scripts.Managers
 
         private void UnSubscribe()
         {
-            
+            CoreGameSignals.Instance.OnLevelComplete -= Completed;
         }
 
         private void Subscribe()
         {
-           
+            CoreGameSignals.Instance.OnLevelComplete += Completed;
         }
 
+        private void Completed()
+        {
+            gamePanel.SetActive(false);
+            winPanel.SetActive(true);
+        }
         public void UpdateXp(int xp)
         {
             var amount = xp / 100;

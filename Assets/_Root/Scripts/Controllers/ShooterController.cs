@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using _Root.Scripts.Managers;
 using _Root.Scripts.Objects;
+using _Root.Scripts.Signals;
 using UnityEngine;
 
 namespace _Root.Scripts.Controllers
 {
     public class ShooterController : MonoBehaviour
     {
+        [SerializeField] private GameObject[] weapons;
+        
         [Header("Shooting Positions")] 
         [SerializeField] private List<Transform> shootingPositions = new List<Transform>();
 
@@ -20,8 +24,28 @@ namespace _Root.Scripts.Controllers
         private float _range;
         private int _damage;
         private int _weaponLevel = 1;
-        
+        private int _xp;
         private float _shootTimer;
+
+        private void OnEnable()
+        {
+            Subscribe();
+        }
+
+        private void OnDisable()
+        {
+            UnSubscribe();
+        }
+
+        private void UnSubscribe()
+        {
+            LevelSignals.Instance.OnXpClaimed -= CollectXp;
+        }
+
+        private void Subscribe()
+        {
+            LevelSignals.Instance.OnXpClaimed += CollectXp;
+        }
 
         private void Start()
         {
@@ -55,10 +79,17 @@ namespace _Root.Scripts.Controllers
             set => _damage += value;
         }
         
-        public int WeaponLevel
+        public int Xp
         {
-            get => _weaponLevel;
-            set => _weaponLevel += value;
+            get => _xp;
+            set
+            {
+                _xp += value;
+                if (_xp >= 100) 
+                {
+                    LevelUp();
+                }
+            } 
         }
 
         private void BeginFire()
@@ -85,11 +116,32 @@ namespace _Root.Scripts.Controllers
                 
                 if (bullet.gameObject.TryGetComponent(out Bullet script))
                 {
-                    script.Fire(bulletSpeed, _range, _damage,_fireRate);
+                    script.Fire(bulletSpeed, Range, Damage, FireRate);
                 }
             }
-            
-            
+        }
+
+        private void CollectXp(int earnedXp)
+        {
+            Xp = earnedXp;
+            UIManager.Instance.UpdateXp(Xp);
+        }
+
+        private void LevelUp()
+        {
+            _xp -= 100;
+            _weaponLevel++;
+            ChangeWeapon();
+            LevelSignals.Instance.OnLevelUp?.Invoke();
+        }
+
+        private void ChangeWeapon()
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.SetActive(false);
+            }
+            weapons[_weaponLevel].SetActive(true);
         }
     }
 }

@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4419665415911593993}
+  - component: {fileID: 8233569382121516837}
   m_Layer: 0
-  m_Name: Gate
+  m_Name: Damage Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,6 +36,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8233569382121516837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4419665415911593992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b7726439d34ed8a02c990b1e733f9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gateMode: 1
+  gateText: {fileID: 4419665416028448020}
+  goDownDuration: 0.5
+  fireRate: 0
+  range: 0
+  damage: 0
+  mainPotion: {fileID: 0}
 --- !u!1 &4419665415926278362
 GameObject:
   m_ObjectHideFlags: 0

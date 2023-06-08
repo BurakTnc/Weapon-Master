@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using _Root.Scripts.Signals;
 using UnityEngine;
 
 namespace _Root.Scripts.Controllers
@@ -27,25 +29,21 @@ namespace _Root.Scripts.Controllers
        {
            UnSubscribe();
        }
+       
 
        private void Subscribe()
        {
-          
+           CoreGameSignals.Instance.OnGameStart += OnGameStart;
+           CoreGameSignals.Instance.OnLevelComplete += OnGameEnd;
        }
 
        private void UnSubscribe()
        {
-           
+           CoreGameSignals.Instance.OnGameStart -= OnGameStart;
+           CoreGameSignals.Instance.OnLevelComplete -= OnGameEnd;
        }
 
        #endregion
-
-       private IEnumerator Start()
-       {
-           yield return new WaitForSeconds(1);
-           //transform.position = new Vector3(0, 0, -91);
-       }
-
        private void Update()
         {
             Movement();
@@ -63,7 +61,7 @@ namespace _Root.Scripts.Controllers
        
        private void Movement()
         {
-            //if(!_isGameRunning) return;
+            if(!_isGameRunning) return;
             
             if (!OnTrap)
             {
@@ -78,14 +76,11 @@ namespace _Root.Scripts.Controllers
                     _pos2 = GetMousePosition();
                     var delta = _pos1 - _pos2;
                     _pos1 = _pos2;
-                    // transform.position += new Vector3(-delta.x * speedSideways * Time.deltaTime, 0,
-                    //     speed * Time.deltaTime);
                     transform.Translate(new Vector3(-delta.x * speedSideways * Time.deltaTime, 0,
                         speed * Time.deltaTime));
                 }
                 else
                 {
-                    //transform.position += transform.forward * (speed * Time.deltaTime);
                     transform.Translate(transform.forward * (speed * Time.deltaTime));
                 }
 

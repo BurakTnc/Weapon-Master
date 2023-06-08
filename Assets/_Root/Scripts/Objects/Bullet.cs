@@ -28,6 +28,13 @@ namespace _Root.Scripts.Objects
             if (other.gameObject.TryGetComponent(out TargetDummyController dummy))
             {
                 dummy.GetHit(_damage,transform.position,_fireRate);
+                Destroy(gameObject);
+            }
+
+            if (other.gameObject.TryGetComponent(out GateController gate))
+            {
+                gate.IncreaseGateStats();
+                Destroy(gameObject);
             }
         }
     }

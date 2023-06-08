@@ -1,4 +1,5 @@
 using System;
+using _Root.Scripts.Controllers;
 using DG.Tweening;
 using UnityEngine;
 
@@ -19,7 +20,6 @@ namespace _Root.Scripts.Objects
 
         private void Initialize()
         {
-            //transform.DOMoveY(0, dropDuration).SetEase(Ease.OutBounce).OnComplete(GetOnBand);
             var desiredPos = new Vector3(transform.position.x, 0, transform.position.z + 2);
             transform.DOJump(desiredPos, .4f, 1, dropDuration).SetEase(Ease.OutBounce)
                 .OnComplete(GetOnBand);
@@ -46,6 +46,17 @@ namespace _Root.Scripts.Objects
         private void Update()
         {
             MoveOnBand();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.TryGetComponent(out GateController gate))
+            {
+                // spawn particle
+                gate.CollectPotion();
+                Destroy(gameObject);
+
+            }
         }
     }
 }
